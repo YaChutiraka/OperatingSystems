@@ -1,0 +1,9 @@
+1. gcc -c useLib.c to get useLib.o
+2. gcc -c math_lib.c to get math_lib.o
+3. Create the library: ar rc libmath.a math_lib.o
+4. Try to create the executable: gcc useLib.o -o prog 
+(fails because linker can't find implementation of add method because we haven't added the library)
+5. Specify the library and the executable now works: gcc useLib.o -L. -lmath -o prog 
+(link the object file with the library and it runs. -L. (note the dot) tells it to look in the current directory. 
+-l is followed by the name of the library without the lib prefix and .a suffix. 
+I named the executable prog, it could be named anything you'd like)
