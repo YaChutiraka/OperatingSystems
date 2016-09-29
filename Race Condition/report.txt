@@ -1,0 +1,44 @@
+Ya Chutiraka UFID: 4663-3911
+---------------------------------------------------------------
+
+Part 0: (increment.c)
+
+In this part, I ran the file with the following command:
+./increment 10 foo.txt 
+and it worked fine .
+(Please let Dr. Nemo know that it is ./increment that we have to run not just increment. That part got me super confused and threw me off because I am not familair with command prompt. Please let him know! Thank you!)
+
+---------------------------------------------------------------
+
+Part 1: consecutive.c
+
+I implemented this file by taking in file name via scanf. So this is different from how Dr.Nemo's increment.c is implement.
+I ran:
+
+./consecutive
+bar.txt
+
+and got expected input of
+
+5 : 5
+6 : 5
+6 : 5
+7 : 16
+
+
+---------------------------------------------------------------
+
+Part 2: spawn.c
+
+When I ran this with a really large number of child process, like 500, I got this error message: 
+"fork failed: Resource temporarily unavailable".  
+
+(the command I ran was: ./spawn 500 "increment 20 foo.txt". If I had run anything bigger than this, it would have failed again)
+
+But when I checked the content of my foo.txt with the  following command (again, this is input through scanf):
+
+./consecutive 
+foo.txt
+
+I did not see any race condition because the consecutive file did not print out anything (that means everything gets increment by 1 succesfully)
+And because of that, I am not sure how to indicate where the critical section is. Sorry.
