@@ -1,0 +1,6 @@
+7c7,9
+< 	profile.c schedule.c
+---
+> 	profile.c schedule.c do_printmsg.c do_printppid.c do_start_plog.c \
+> 	do_stop_plog.c do_reset_plog.c do_get_plog_size.c do_get_plog_byPID.c \
+> 	do_get_plog_byindex.c Buffer.h

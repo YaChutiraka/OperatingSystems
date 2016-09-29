@@ -1,0 +1,47 @@
+30a31
+> #include "Buffer.h" // Added By Ya project1 9/27/2016
+40a42,48
+> // Added by Ya Chutiraka for project1 9/27/2016
+> 
+> struct Buffer buff[1024];
+> int on_off;
+> int curr_index;
+> 
+> // End here
+133a142,165
+> 
+>  // Added by Ya Chutiraka for project1 on 9/27/2016
+>  // TESTED and it works
+>  if(on_off == 1){
+> //	printf("next_child index = %d \n\n\n\n", next_child);
+> 	
+> //	printf("mproc[next_child].mp_pid =  %d EQUAL rmc->mp_pid = %d", mproc[next_child].mp_pid, rmc->mp_pid);
+> 	
+> //	printf("mproc[next_child].mp_parent = %d = parent index NOT EQUAL rmp->mp_pid = %d - real pid of parent\n\n\n", mproc[next_child].mp_parent, rmp->mp_pid);
+> 	
+> //	printf("parent index = %d /n/n/n" ,mproc[mproc[next_child].mp_parent].mp_pid);	
+> 
+> 
+> 	// t4 and m2_l1 are the same
+> 	//printf("%ld-- %ld -- %ld --%ld \n\n\n\n", mp->mp_reply.m2_l1, rmp->mp_reply.reply_t3, rmp->mp_reply.reply_t4, rmp->mp_reply.reply_t5);
+> 	
+> 	if(curr_index>1023) curr_index=0;
+> 	
+> 	buff[curr_index].this_pid = rmp->mp_pid; // parent (we already halt child) 
+> 	buff[curr_index].c_time = (long)rmp->mp_reply.reply_t4; 
+> 	buff[curr_index].t_time = 0; //unknow- will change to do_time() 
+> 	//printf("/n* * * * * * do_fork this_pid = %d || c_t = %ld  || t_t = %ld", buff[curr_index].this_pid, buff[curr_index].c_time, buff[curr_index].t_time);
+> 	curr_index++; 
+> }
+378a411,421
+> 
+>  // Added by Ya Chutiraka project1 9/27/2016
+>  if(on_off==1){
+> 	for(int i=0; i<=curr_index; i++){
+> 		if(buff[i].this_pid == rmp->mp_pid){
+> 			//leave c_time as it is
+> 			buff[i].t_time = (long)rmp->mp_reply.reply_t4;
+> 			break;
+> 		}
+> 	}
+>  }

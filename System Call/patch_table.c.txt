@@ -1,0 +1,34 @@
+14c14
+< 	no_sys,		/*  0 = unused	*/
+---
+> 	do_start_plog,	/*  0 = startplog	*/
+49c49
+< 	no_sys,		/* 35 = unused	*/
+---
+> 	do_stop_plog,	/* 35 = stopplog	*/
+58c58
+< 	no_sys,		/* 44 = unused	*/
+---
+> 	do_reset_plog,	/* 44 = resetplog	*/
+63c63
+< 	no_sys,		/* 49 = unused	*/
+---
+> 	no_sys,		/* 49 = unused  */
+70c70
+< 	no_sys,		/* 56 = unused	*/
+---
+> 	do_get_plog_byindex,/* 56 = getplogbyindex	*/
+72c72
+< 	no_sys,		/* 58 = unused	*/
+---
+> 	do_printppid,	/* 58 = printppid	*/
+83,84c83,84
+< 	no_sys,		/* 69 = unused	*/
+< 	no_sys,		/* 70 = unused	*/
+---
+> 	do_get_plog_size,	/* 69 = getplogsize	*/
+> 	do_get_plog_byPID,	/* 70 = getplogbypid	*/
+93c93
+< 	no_sys,		/* 79 = unused */
+---
+> 	do_printmsg,	/* 79 = printmsg */

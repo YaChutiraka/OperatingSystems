@@ -1,0 +1,10 @@
+438a439,447
+> int printmsg(int);
+> int printppid(int, int);
+> void start_plog();
+> void stop_plog();
+> void reset_plog();
+> int get_plog_size();
+> int get_plog_byPID(int, long *, long *);
+> int get_plog_byindex(int, long *, long *);
+> 

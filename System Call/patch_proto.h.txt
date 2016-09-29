@@ -1,0 +1,9 @@
+58a59,66
+> int do_printmsg(void);
+> int do_printppid(int, int);
+> void do_start_plog(void);
+> void do_stop_plog(void);
+> void do_reset_plog(void);
+> int do_get_plog_size(void);
+> int do_get_plog_byPID(int pid, long *c_time, long *t_time);
+> int do_get_plog_byindex(int index, long *c_time, long *t_time);

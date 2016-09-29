@@ -1,0 +1,6 @@
+19c19,21
+< 	_exit.c _ucontext.c environ.c __getcwd.c vfork.c sizeup.c init.c
+---
+> 	_exit.c _ucontext.c environ.c __getcwd.c vfork.c sizeup.c init.c \
+> 	printmsg.c printppid.c start_plog.c stop_plog.c reset_plog.c \
+> 	get_plog_size.c get_plog_byPID.c get_plog_byindex.c

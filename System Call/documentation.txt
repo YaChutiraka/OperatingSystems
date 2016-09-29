@@ -1,0 +1,105 @@
+Project 1 Documentation
+Overview of what this project achieved: 
+1. Create a cleared circular buffer (will have the size of 1024 to record most recent info)
+2. Create 6 procedure calls to access 6 system calls, which do what is mentioned in step 3.
+a. These procedure calls are part of “system library” 
+b. The content of the procedure call will be in .c and .h file
+3. System calls can do the following
+a. Turn on process tracking: Once the system call turns on the process tracking by do_start_plog,  for any process created by fork() after that, the global variable on_off is set to on so that the system call can record the creation time of those processes and store the information in the circular buffer created in step 1. 
+* Also records any termination time when a process executes exit().
+b. Turn off process tracking: Once the system call turns off the process tracking, if anything is still in the circular buffer, leave it there
+c. Obtain information in the circular buffer: The system call must allow the information in the circular buffer, which stores recorded time of process creation and termination) to be obtained. The information includes 
+* The size of circular buffer
+* The entry data of a given PID
+* Given an index i of the circular buffer, the entry data of that index i 
+4. Create a man page
+a. This is to document the new library call
+* They are all located in /usr/man/man2
+b. This man page must be accessible through the man command
+* For example: man start_plog
+5. Create a patch file to apply updates
+a. 7 patch files in total with the format patch_ORIGINAL_NAME)WITH_EXTENSION.txt
+6. Create a makefile, but the content basically goes into the server’s existing makefiles as an update
+a. This is located in /root 
+7. Create a README file
+List of functions I implemented 
+1. void start_plog()
+2. void stop_plog()
+3. void reset_plog()
+4. int get_plog_size()
+5. int get_plog_byPID(int pid, long* c_time, long* t_time)
+6. int get_plog_byindex(int index, long* c_time, long* t_time)
+How I implemented the new system call:
+1. What changes were made to which file 
+a. /usr/src/servers/pm/table.c
+b. /usr/src/include/minix/callnr.h
+c. /usr/src/servers/pm/proto.h
+d. /usr/src/servers/pm/Makefile 
+e. /usr/src/include/unistd.h
+f. /usr/src/lib/libc/sys-minix-Makefile.inc
+g. /usr/src/servers/pm/forkexit.c
+2. Why each change was made
+a. void start_plog() 
+* is to turn on the procedure tracking  by creating a global int on_off variable. If it is on, we implement logging process in forkexit.c
+b. void stop_plog() 
+* is to turn off the procedure tracking by creating a global int on_off variable. If it is off, we do not need to do anything else.
+c. void reset_plog() 
+* is to clear the circular buffer
+* I did not implement it in a way that is literally gets cleared. But I use a global variable int curr_index to keep track of which index to log info into. When the buffer is reset, the curr_index goes back to 0.
+d. int get_plog_size() 
+* is for use to obtain the constant size of circular buffer. For this project it is always 1024.
+e. int get_plog_byPID(int pid, long* c_time, long* t_time) 
+* is for us to get info stored in the circular buffer given a PID. 
+* The info we get is creation and termination time. We put that info into the address c_time and t_time we pass in
+f. int get_plog_byindex(int index, long* c_time, long* t_time) 
+* is for us to get info stored in the circular buffer given an index.
+* The info we get from looking up that index is creation and termination time. We put that info into the address c_time and t_time we pass in
+
+3. New files I created and submitted (there are some other files created but not submitted )
+a. /usr/src/servers/pm/do_start_plog.c
+b. /usr/src/servers/pm/do_stop_plog.c
+c. /usr/src/servers/pm/do_reset_plog.c
+d. /usr/src/servers/pm/do_get_plog_size.c
+e. /usr/src/servers/pm/do_get_plog_byPID.c
+f. /usr/src/servers/pm/do_get_plog_byindex.c
+g. /usr/src/servers/pm/do_printmsg.c // for my testing
+h. /usr/src/servers/pm/do_printppid.c // for my testing
+i. /usr/src/lib/sys-minix/stop_plog.c
+j. /usr/src/lib/sys-minix/reset_plog.c
+k. /usr/src/lib/sys-minix/get_plog_size.c
+l. /usr/src/lib/sys-minix/get_plog_byPID.c
+m. /usr/src/lib/sys-minix/start_plog_byindex.c
+n. /usr/src/lib/sys-minix/printmsg.c // for my testing
+o. /usr/src/lib/sys-minix/printppid.c // for my testing
+p. /usr/src/servers/pm/Buffer.h
+q. /usr/man/man2/start_plog.2
+r. /usr/man/man2/stop_plog.2
+s. /usr/man/man2/reset_plog.2
+t. /usr/man/man2/get_plog_size.2
+u. /usr/man/man2/get_plog_byPID.2
+v. /usr/man/man2/get_plog_byindex.2
+w. /root/procedure.c // actual testing
+4. Where original (unchanged) files are located 
+a. /home/project1/
+5. How testing was performed
+a. When PID exists in buffer
+b. When PID does not exist in buffer
+c. Index within bound of buffer
+d. Index out of bound of buffer
+e. Does size stay constant (1024) after and function is called?
+f. Does logging appear after start_plog is called?
+g. Does logging stop after stop_plog is called?
+6. Known bugs
+a. This is more like a caution and it is already Fixed: every time data are put in buffer, the global variable curr_index is incremented to the next one so that is will be ready to use for next new process. Therefore, when dping testing on edge index (right after curr_index or right at curr_index), it can be confusing. Curr_index has nothing stored at it most of the time (as it is being ready to be used for putting data in buffer). Therefore, index curr_index is considered out of bound.
+Reflections
+1. Challenges
+a. I am a person that learns by pattern recognition. I need to follow some example to recognize how to do it and I can start giving it a shot myself. I found resources for minix to be quite “limited” online. Not limited in a way that there is nothing there to learn (it is there, overwhelmingly). But it lacks of specific examples related to things we are assigned to do. Therefore, just the info available out there, though can be abundant, can feel pretty overwhelming. And hence, it does not help much. 
+b. It is really difficult to even know where to start. It is not just the problem solving skills that matter anymore. It has a lot to do with how to integrate that solution into the existing system, which is too huge to be understood.
+2. How to overcome those challenges
+a. TAs and professors are familiar with minix so they are able to provide appropriate help. But it makes us become dependent and the time to meet time might not align 100% well with our schedules. However, they are the best resources we have compared to overwhelming amount of info out there.
+b. I wish that for each solution we need to implement, we were told what additional/miscellaneous things we need to add to the existing system to make it work are. Sometimes we wouldn’t know how to debug anything at all because we do not even know what has gone wrong.
+
+
+COP 46000Project 1 System Call0Ya Chutiraka
+		UFID: 4663-3911
+

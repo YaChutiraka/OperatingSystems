@@ -1,0 +1,25 @@
+.\" Ya Chutiraka Project1 
+.\"
+.TH GET_PLOG_SIZE 2 "Sept 28, 2016"
+.UC 4
+.SH NAME
+get_plog_size \- get the constant size of the default logging buffer
+.SH SYNOPSIS
+.ft B
+.nf
+#include <lib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.d>
+#include <sys/wait.h>
+
+int get_plog_size(void)
+.fi
+.ft R
+.SH DESCRIPTION
+.B Get_plog_size
+returns an int
+get the default/declared size of the process logging buffer by calling a do_get_plog_size() system call
+.PP
+.SH "SEE ALSO
+.BR fork (2), exit (2), start_plog (2), stop_plog (2), reset_plog (2).

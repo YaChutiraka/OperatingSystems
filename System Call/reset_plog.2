@@ -1,0 +1,25 @@
+.\" Ya Chutiraka Project1 
+.\"
+.TH RESET_PLOG 2 "Sept 28, 2016"
+.UC 4
+.SH NAME
+reset_plog \- make buffer used for logging process ready 
+.SH SYNOPSIS
+.ft B
+.nf
+#include <lib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.d>
+#include <sys/wait.h>
+
+void reset_plog(void)
+.fi
+.ft R
+.SH DESCRIPTION
+.B Reset_plog
+returns nothing
+Make buffer used for logging process ready  by changing location of the buffer's logging index to the initial location by calling a do_reset_plog system call
+.PP
+.SH "SEE ALSO
+.BR start (2), stop_plog (2).

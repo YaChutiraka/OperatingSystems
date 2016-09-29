@@ -1,0 +1,15 @@
+3a4
+> #define START_PLOG	   0
+37a39
+> #define STOP_PLOG	  35
+45a48
+> #define RESET_PLOG	  44
+56a60
+> #define GET_PLOG_BYINDEX  56
+57a62
+> #define PRINTPPID	  58
+67a73,74
+> #define GET_PLOG_SIZE	  69
+> #define GET_PLOG_BYPID    70
+78a86
+> #define PRINTMSG          79
