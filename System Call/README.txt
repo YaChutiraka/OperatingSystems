@@ -1,6 +1,6 @@
 # Name: (Ya) Naweeya Chutiraka
-# UFID: 46633911
-# Gator ID: nc10nchu
+# UFID: 
+# Gator ID: 
 
 In my makefile, I make it run both 
 - existng makefile for system call,
