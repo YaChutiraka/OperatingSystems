@@ -2,6 +2,8 @@
 # UFID: 
 # Gator ID: 
 
+THIS IS MINIX 3.2.1 DONE THROUGH ORACLE VIRTUAL BOX.
+
 In my makefile, I make it run both 
 - existng makefile for system call,
 - existing makefile for library call
