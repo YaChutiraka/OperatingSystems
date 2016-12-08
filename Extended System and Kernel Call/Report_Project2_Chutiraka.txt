@@ -5,10 +5,10 @@ Project2 Task1
 Summary
 
 I have tried this project in 3 approaches, 2 of which failed. I have challenges I came across listed for each approach. At the end of the report, I listed what I have got working, and what not.
-I really want to thank the TAs so much for taking time to help me. It has been really difficult and without the TAs I wouldnít have been able to do what I have done here. Thank you
+I really want to thank the TAs so much for taking time to help me. It has been really difficult and without the TAs I wouldn‚Äôt have been able to do what I have done here. Thank you
 
-1st APPROACHíS THOUGHT FLOW
-Note: This approach proved itself to be not plausible. But I sent so many hours pursuing it until I gave up.
+1st APPROACH‚ÄôS THOUGHT FLOW
+Note: This approach proved itself to be not plausible. But I spent so many hours pursuing it until I gave up.
 1.	I wanted to create a library call, that allows user to input a PID they are interested and also turn on/off the tracking process 
 2.	I planned to link the library call to a system call
 3.	I created a buffer struct, with the following fields: 
@@ -29,21 +29,21 @@ a.	Blocked state and Running state can be obtained from usr/src/kernel/proc.c
 11.	After my system call receives the state_to and state_from info of the interested PID, it can fill in the buffer associated with that PID.
 12.	After the buffer has all necessary fields of the interested PID, I would end up in servers/pm where I started (not kernels) and I would write the info associated with this PID (i.e. PID, time, state_from, state_to) into a file somewhere here. 
 13.	Or even if I had to connet from servers/pm to servers/vfs, I thought it would be doable because both of them are located in servers
-14.	Step 10. ñ 13. Is  where the TA told me it is not how it should work. So all what I have done, time and effort earlier just went wasted ? 
+14.	Step 10. ‚Äì 13. Is  where the TA told me it is not how it should work. So all what I have done, time and effort earlier just went wasted ? 
 That is my idea. But this approach was proved to not work (after I spent so many hours on it) because of some challenges
 
-1st APPROACHíS CHALLENGES
+1st APPROACH‚ÄôS CHALLENGES
 1.	Buffer has a limited size. If I record all PIDs that are every created, not only the PID user is interested in tracking states, the buffer will get filled up really fast because there can be multiple processes going on at once. And if the buffer is filled, it starts to overwrite existing records. That means when a user inputs a PID to request it to be written to a file, that PID might not exist in the buffer anymore (as it might have got overwritten already)
 2.	There is no PID that my kernel can associate the given PID with from the system call level. (this leads to my 2nd approach which ended up not working again ?)
 
-2nd APPROACHíS THOUGHT FLOW
+2nd APPROACH‚ÄôS THOUGHT FLOW
 Note: This approach proved itself to just not work despite the fact that it worked for some others. The debugging process in server/vm and lib/libsys is really limited and after spending so many hours on that, trying to hack it in multiple ways, it was impossible to debug
 ------ Set up infrastructure 
 1.	Since there is no PID in kernel, I need to find a way to add that a PID field to kernel, so that I can make use of it when user is interested in a certain PID.
 2.	I wanted every process ever created to have its own PID field in kernel (this is the /usr/src/kernel/proc.h I am referring to)
 3.	I have to track down, when  process is created (with an associated PID), how that creation process works
 4.	I tracked down forkexit in servers/pm to fork in servers/vm then fork in lib/libsys and finally it gets to fork in kernel (something went wrong in servers/vm for me)
-5.	I got introduced to a new command ìgrepî that can be used for searching keywords in a directory. This helps me track down the creation process, to see what functions being called from within minix (huge thank you to Troy here!!)
+5.	I got introduced to a new command ‚Äúgrep‚Äù that can be used for searching keywords in a directory. This helps me track down the creation process, to see what functions being called from within minix (huge thank you to Troy here!!)
 
 ------Functionality 
 1.	(assume I have infrastructure set up like I mentioned earlier in the above section)
@@ -52,20 +52,19 @@ Note: This approach proved itself to just not work despite the fact that it work
 4.	I wanted to make this system call pass down the interested PID to kernel
 5.	Now in kernel, there should be a pid field in kernel/proc.h the way I attempted to set up the infrastructure above.
 
-2nd APPROACHíS CHALLENGES
-1.	Adding an additional parameter field to lib/libsys/vm_fork.c in order to pass pid to kernel just did not make sense in Minix!! For example int foo(int a, int b, int x) should be the same thing as  int foo(int x, int a, int b) as long as you pass in arguments according to the order. But in minix it did not work! I added my additional field as the first argument and it made my kernel crash! (and yes, I made sure I changed all related macros and function signature and declaration). It took me 2 days of work to figure out why it crashed. Eventually I did some  checking between stages of minix and found that the value of the first argument always remained the first one even though you switch the order you try to pass it in. That makes no sense. And it turned out to be the case that, in minix, at least for fork anyway, an additional argument to a function you add has to be the last argument. It cannot be the first, which does not make any sense! The order of arguments should not matter as long as when you pass it actual values you do it with the right order. The order of arguments should not matter as long as you are consistent with the function signature everywhere in the code base.  Here is what I meant:
+2nd APPROACH‚ÄôS CHALLENGES
+1.	Adding an additional parameter field to lib/libsys/vm_fork.c in order to pass pid to kernel just did not make sense in Minix!! For example int foo(int a, int b, int x) should be the same thing as  int foo(int x, int a, int b) as long as you pass in arguments according to the order. But in minix it did not work! I added my additional field as the first argument and it made my kernel crash! (and yes, I made sure I changed all related macros and function signature and declaration). It took me 2 days of work to figure out why it crashed. Eventually I did some  checking between stages of minix and found that the value of the first argument always remained the first one even though you switch the order you try to pass it in. That makes no sense. And it turned out to be the case that, in minix, at least for fork anyway, an additional argument to a function you add has to be the last argument. It cannot be the first, which I found it to be odd. The order of arguments should not matter as long as when you pass it actual values you do it with the right order. The order of arguments should not matter as long as you are consistent with the function signature everywhere in the code base.  Here is what I meant:
 a.	int vm_fork(endpoint_t ep, int slot, endpoint_t *childep, pid_t pid) is acceptable in Minix
 b.	int vm_fork(pid_t pid, endpoint_t ep, int slot, endpoint_t *childep) is not acceptable in Minix
 c.	Honestly, the order should not matter
-d.	Sorry for repeating myself, but I was really upset about it.
-2.	There is this one thing that is really weird happening when I tried to debug my code. In /usr/src/servers/pm/forkexit.c, if I try to printf the value of vm_fork(rmp->mp_endpoint, next_child, &child_ep), it is going to print. But after printing succesfully, it will crash the kernel. If I do not print, it does not crash. Since printing was done successfully, the crashing cannot be because of the prinf. But that print statement was the only thing I added. It would make more sense if it couldnít print and therefore it crashed. I really cannot debug further because it makes no sense that a statement is executed successfully but can cause something to crash.
-3.	So because of that weird crash, I tried to go into the problematic function to see what is in there and try to debug it by printing something out (/usr/src/lib/libsys/vm_fork.c). It just never prints anything even though it is executed successfully. I can tell it is executed successfully because the function that is called afterward was reached. How can it reach the next function without printing my message that intercepts the flow?? Or maybe in minix anything in lib/libsys cannot be displayed on the screen/ 
+2.	There is this one thing that is really weird happening when I tried to debug my code. In /usr/src/servers/pm/forkexit.c, if I try to printf the value of vm_fork(rmp->mp_endpoint, next_child, &child_ep), it is going to print. But after printing succesfully, it will crash the kernel. If I do not print, it does not crash. Since printing was done successfully, the crashing cannot be because of the prinf. But that print statement was the only thing I added. It would make more sense if it couldn‚Äôt print and therefore it crashed. I really cannot debug further because it was not clear why a statement is executed successfully but can cause something to crash.
+3.	So because of that weird crash, I tried to go into the problematic function to see what is in there and try to debug it by printing something out (/usr/src/lib/libsys/vm_fork.c). It just never prints anything even though it is executed successfully. I can tell it is executed successfully because the function that is called afterward was reached. How can it reach the next function without printing my message that intercepts the flow? Or maybe in minix anything in lib/libsys cannot be displayed on the screen/ 
 4.	So in servers/vm (in the middle of passing down PID from servers/pm to kernel ), the PID that got passed got modified by nothing. It became so big, like over thousand or something, and there was no reason why it happened. I tracked it down and found that in /usr/src/servers/vm/fork.c is where my PID got changed from its real value to something huge. I think it has to do with the virtual memory where everything gets translated to different number. But other arguments passed down did not get affected. Only my PID that got passed down via new field for the function (see 1.a and 1.b) got changed.
-5.	After so many hours of debugging, running mount ñt vbfs ño share=transferring none /mnt and doing all coping files from local to minix back and forth a thousand times, I gave up this approach because it was impossible to debug.
+5.	After so many hours of debugging, running mount ‚Äìt vbfs ‚Äìo share=transferring none /mnt and doing all coping files from local to minix back and forth a thousand times, I gave up this approach because it was impossible to debug.
 6.	I had to restore to previous snapshots so many times and setting things up took a lot of time.
 7.	What I learned here is in servers/vm and lib/libsys, you cannot print things to console. I had no idea why. 
 
-3rd APPROACHíS THOUGHT FLOW
+3rd APPROACH‚ÄôS THOUGHT FLOW
 Note: This is the one I am submitting my source codes for.
 1.	I created a library call that takes in an input (whether user wants to start or stop the tracking) as well as a pid they are interested in
 2.	This library call will then call a system call
@@ -73,7 +72,7 @@ Note: This is the one I am submitting my source codes for.
 4.	If not there, tell use the pid is invalid 
 5.	If yes, I will grab the endpoint associated with that pid
 6.	In system call, I call a kernel call and pass down the pid and the associated with that pid down to kernel 
-7.	At first I wanted to make it in a good practice way by creating an actual kernel call to be an interface between my servers and kernel. I followed tutorials I could find exactly but it did not work! I was so surprised how official minix documentation even has bugs in it! 
+7.	At first I wanted to make it in a good practice way by creating an actual kernel call to be an interface between my servers and kernel. I followed tutorials I could find exactly but it did not work! I was so surprised how official minix documentation even has what seems to be bugs in it.
 8.	I found 2 more tutorials online that are not official but they are working with different version of minix so the info there does not apply to the minix we are using at all.
 9.	I followed the path fork is being called from system call down to kernel and tried to do the same way (but without having to go through vm because there is no need for me to do that. I can just try to go straight form system call to kernel) But it still did not work! It kept telling me I cannot call my interface call. There is not reference or whatever even though in the heading, I included everything fork included. It still did not work.
 10.	I ended up having to do it a in a way that is not the best practice by calling actual kernel call from my system call without interface.  (at least I attempted to do it the good way. But after many hours, if it does not work, we have to find a way to work around right?)
@@ -82,9 +81,9 @@ Note: This is the one I am submitting my source codes for.
 13.	This pid slot is only filled with interested pid when user specifies. Otherwise, there is nothing in that pid dummy variable.
 14.	Because pid is not in kernel for every process, I mostly worked with endpoint instead and just use pid when I wanted to print like the project instruction wanted me to.
 15.	Once I got all the way down from system call to kernel call, I also flag that process as being tracked.
-16.	I also marked my global variable (called ìinterestedî) to have to endpoint I was interested in tracking
-a.	Note that for this part, I did not know that we could track more than 1 process at a time earlier. So my ìinterestedî variable should have been able to accommodate more than just 1 endpoint of a process. It should have been a struct or so. But I ran out of time to re implement and test it. I left it just with tracking 1 process capability. Sorry. But the fix is really easy here. I could have done it honestly with time to test it properly.
-17.	In proc.c, when enqueue, dequeu, pick_proc is called for a process, I needed to do some checking to see if that process is the same as my interested process for tracking (I use the ìinterested î variable I mentioned earlier and I used my track flag to test the condition. Again, because my ìInterestedî variable can hold only 1 value at a time, I am able to track only 1 process due to the way I have it set up)
+16.	I also marked my global variable (called ‚Äúinterested‚Äù) to have to endpoint I was interested in tracking
+a.	Note that for this part, I did not know that we could track more than 1 process at a time earlier. So my ‚Äúinterested‚Äù variable should have been able to accommodate more than just 1 endpoint of a process. It should have been a struct or so. But I ran out of time to re implement and test it. I left it just with tracking 1 process capability. Sorry. But the fix is really easy here. I could have done it honestly with time to test it properly.
+17.	In proc.c, when enqueue, dequeu, pick_proc is called for a process, I needed to do some checking to see if that process is the same as my interested process for tracking (I use the ‚Äúinterested ‚Äù variable I mentioned earlier and I used my track flag to test the condition. Again, because my ‚ÄúInterested‚Äù variable can hold only 1 value at a time, I am able to track only 1 process due to the way I have it set up)
 18.	Enqueue: when a process becomes READY
 19.	Dequeue: when a process becomes BLOCKED
 20.	Pick_proc: when a process becomes RUNNING
@@ -98,24 +97,24 @@ a.	Note that for this part, I did not know that we could track more than 1 proce
 28.	The notify VFS is only implemented in proc.c (in enqueue, dequeu, pick_proc) but not do_fork and do_kill. That is because for some reason /kerne/system/do_fork and /kerne/system/do_kill has some reference error in  my minix and made it not possible for my kernel to use send_mini to notify VFS. If I use send_mini is do_fork and do_kill, I ended up with my minix running non-stop, and then it reboots itself automatically. I had no idea why mini_send caused that. I did not have enough time to debug. Sorry. But mini_send works in my kernel/proc.c though, Maybe it is because the implementation of mini_send is in proc.c as well.
 29.	I successfully notified VFS when my buffer in kernel is full.
 30.	In VFS, I have a buffer with the same size as the one in my kernel.
-31.	After VFS is notified using mini_send, the content of what is in my kernelís buffer is copied over to VFSí buffer (using sys_vircopy) sucessfully.
+31.	After VFS is notified using mini_send, the content of what is in my kernel‚Äôs buffer is copied over to VFS‚Äô buffer (using sys_vircopy) sucessfully.
 32.	I print out output from VFS there to demonstrate that my states got from kernel to VFS succesfully. 
 33.	However, the printing seemed to not terminate and got stuck after the process went through the 3rd or 4th BLOCKED state. You had to do ctrl+C to quit. After you quit, the statement will keep on being printed out but you can run other command though
 34.	I think is problem happened because the process I chose to track for testing is a shell process. Testing with other processes would show me what the problem is but I did not have enough time.
-35.	It also might have to do with the fact that my /kerne/system/do_kill cannot call VFS too (like I mentioned earlier in step 28.) Maybe that is why it couldnít terminate properly 
-36.	In VFS, I think writing to a file requires me to use Read.c and Write.c file to actually write to content of my VFSí buffer to a file. However, I ran out of time and did not get to that stage.
+35.	It also might have to do with the fact that my /kerne/system/do_kill cannot call VFS too (like I mentioned earlier in step 28.) Maybe that is why it couldn‚Äôt terminate properly 
+36.	In VFS, I think writing to a file requires me to use Read.c and Write.c file to actually write to content of my VFS‚Äô buffer to a file. However, I ran out of time and did not get to that stage.
 37.	My final result is I have tracking data from kernel available in VFS. But I did not implement writing to file functionality. 
 
-3rd APPROACHíS CHALLENGES
+3rd APPROACH‚ÄôS CHALLENGES
 1.	I cannot get time in milliseconds in kernel. I think I saw quite a few files in kernel and libsys directory than I can try to play around with to retrieve the right time (like info will need to get passed down to kernel or something). I ended up using get_uptime() this is available in kernel already for this. However, this is not milliseconds. It is number of clock ticks. So it is not accurate when it comes to significant figures like I wanted at all. I am so sorry.
 2.	My minix program crashed so many times because modifying kernel made that happen. When I restored, it took forever to copy content from minix to my local computer.
 3.	Honestly, copying from local to minix back and forth takes so much time. There are at least 6-7 files each time I need to copy to run. They are all located in different places in minix. And copy command with absolute path (like cp /usr/src/servers/pm/forkexit.c  /mnt/proj2/servers/) is so long for both destination and origin. It would have saved so much time if we could do everything locally. We would have been much more productive
-4.	Minix has to reboot really often for this project. When it reboots, it hasto run mount ñt vbfs ño share=transferring none /mnt every single time!!!! It takes so much time just because of the inconvenient nature of this. And the project itself is really difficult to begin with already. It adds up and makes me panic all the time.
+4.	Minix has to reboot really often for this project. When it reboots, it hasto run mount ‚Äìt vbfs ‚Äìo share=transferring none /mnt every single time. It takes so much time just because of the inconvenient nature of this. And the project itself is really difficult to begin with already. It adds up and makes me panic all most of the time.
 
 OVERALL ACCOMPLISHMENTS
 1.	Able to pass down pid and endpoint to kernel from user space
 2.	Tracking states work
-3.	Able to notify VFS from kernel when the kernelís buffer is full
+3.	Able to notify VFS from kernel when the kernel‚Äôs buffer is full
 4.	Able to pass the kernel buffer storing states to VFS
 5.	Able to store the same state info in VFS
 6.  I also have my manpages for plog_state_start and plog_state_stop. They are meant to go into /usr/man/man2
@@ -129,19 +128,19 @@ OVERALL FAILURES
 3.	When I used mini_send in there, the program will run and automatically reboots itself for no reason.
 4.	I found out that we are able to track more than one process at a time too late. The flagging system I set up does not accommodate that. But the fix is really easy. Using an array instead of just one single variable will do. I just do not have time anymore.
 5.	The time I could get in kernel is clock_t which is number of ticks, not milliseconds. 
-6.	For userís interaction with minix, when PID is input, I did not have time to find out what may cause the PID to be a non-user pid (return 2) or if there is a file error (return 3). I can only indicate if it is a valid one (return 0) or if it is not found/invalid (return 1)
+6.	For user‚Äôs interaction with minix, when PID is input, I did not have time to find out what may cause the PID to be a non-user pid (return 2) or if there is a file error (return 3). I can only indicate if it is a valid one (return 0) or if it is not found/invalid (return 1)
 -----Multiple failed attempts/approaches 
 1.	Please refer to approach 1 and approach 2 I discussed above.
 
 WHAT I LEARNED
 1.	If I were able to run everything locally without transferring files, it would have saved so much time
 2.	I love GUI much more than command line now.
-3.	Navigating through a big code base if really challenging. I really look up to the TAs that they are able to do it.
+3.	Navigating through a big code base is really challenging. I really look up to the TAs that they are able to do it.
 4.	I found like this project makes me feel like it is a research or something. I had to tried multiple ways and most of them failed. 
 5.	If I had got the right approach to begin with, I would have had time to debug and test everything I needed to. I am sorry for failing the first two attemps.
-6.	This is a very long report I wrote here. I did so much. And I fialed so much. I did not accomplish everything I wanted. Please forgive me. But I tried very hard. I put in more than 10 hours every single day working on this project (no disruption, not facebook. Nothing during the time).
+6.	This is a very long report I wrote here. I did so much. And I fialed so much. I did not accomplish everything I wanted. Please forgive me. But I tried very hard. I put in more than 10 hours every single day for weeks working on this project (no disruption, no facebook. Nothing during the time).
 7.	I wish we could have done it conceptually. Making connections between pieces of minix is really difficult especially if this is the first time seeing it. I wish we had been introduced earlier to know exactly what each directory of minix is doing. Maybe we could have done it with a diagram without actually implementing it. 
-8.	Modifying kernel is really scary. The first time my kernel crashed (no way to debug) I wanted to cry. Troy saved my life there.
+8.	Modifying kernel is really scary. The first time my kernel crashed (no way to debug) I wanted to cry. Troy saved my life there as he showed me how to get thr previous image of the most recent working version in virtual box  
 9.	Making patch files took much longer than I thought
 10.	I wish virtual box had a better accommodations and capabilities to do things like regular IDE.
 
