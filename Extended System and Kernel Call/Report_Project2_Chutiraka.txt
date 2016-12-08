@@ -136,7 +136,7 @@ WHAT I LEARNED
 1.	If I were able to run everything locally without transferring files, it would have saved so much time
 2.	I love GUI much more than command line now.
 3.	Navigating through a big code base is really challenging. I really look up to the TAs that they are able to do it.
-4.	I found like this project makes me feel like it is a research or something. I had to tried multiple ways and most of them failed. 
+4.	I found like this project makes me feel like it is a research or something. I had to try multiple ways and most of them failed. 
 5.	If I had got the right approach to begin with, I would have had time to debug and test everything I needed to. I am sorry for failing the first two attemps.
 6.	This is a very long report I wrote here. I did so much. And I fialed so much. I did not accomplish everything I wanted. Please forgive me. But I tried very hard. I put in more than 10 hours every single day for weeks working on this project (no disruption, no facebook. Nothing during the time).
 7.	I wish we could have done it conceptually. Making connections between pieces of minix is really difficult especially if this is the first time seeing it. I wish we had been introduced earlier to know exactly what each directory of minix is doing. Maybe we could have done it with a diagram without actually implementing it. 
