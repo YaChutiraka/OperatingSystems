@@ -2,6 +2,7 @@
 # UFID: 
 # Gator ID:
 
+THIS IS MINIX 3.2.1 DONE THROUGH ORACLE VIRTUAL BOX.
 
 (For what approaches I have taken, challenges, failures, what I accomplished, and what I did not accomplish, and what I learn is located in a separate report file.)
 
