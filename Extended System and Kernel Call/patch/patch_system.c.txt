@@ -1,0 +1,2 @@
+191a192
+>   map(SYS_PLOG, do_plog); /* do_plog kernel call */

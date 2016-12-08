@@ -1,0 +1,25 @@
+.\" Ya Chutiraka Project1 
+.\"
+.TH GET_PLOG_BYINDEX 2 "Sept 28, 2016"
+.UC 4
+.SH NAME
+get_plog_byindex \- get the creation and termination time of a process stored at a particular index address in the process logging buffer
+.SH SYNOPSIS
+.ft B
+.nf
+#include <lib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.d>
+#include <sys/wait.h>
+
+int get_plog_byindex(int index, long* c_time, long* t_time)
+.fi
+.ft R
+.SH DESCRIPTION
+.B Get_plog_byindex
+returns an int; 0 if te index is within the range and 3 if it is out of bound or beyond the curr_index
+get the errorCode from trying to retrieve creation and termination time of a process at a specific index of process logging buffer by calling a do_get_plog_byindex() system call
+.PP
+.SH "SEE ALSO
+.BR get_plog_byPID (2).

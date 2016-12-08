@@ -1,0 +1,59 @@
+5,8c5,8
+<  *    m1_i1:	PR_ENDPT	(parent, process that forked)
+<  *    m1_i2:	PR_SLOT		(child's process table slot)
+<  *    m1_p1:	PR_MEM_PTR	(new memory map for the child)
+<  *    m1_i3:	PR_FORK_FLAGS	(fork flags)
+---
+>  *    m7_i1:	PR_ENDPT2	(parent, process that forked)
+>  *    m7_i2:	PR_SLOT2	(child's process table slot)
+>  *    m7_p2:	PR_MEM_PTR2	(new memory map for the child)
+>  *    m7_i3:	PR_FORK_FLAGS2	(fork flags)
+18a19,22
+> // Added by Ya Chutiraka for proj2 11/21/2016
+> #include "glo.h"
+> #include "kernel/proc.h"
+> #include "kernel/clock.h"
+19a24,38
+> struct buffer_plog buffer_plog[BUFFER_SIZE];
+> int current;
+> endpoint_t interested; //endpoint of the proc we want to track
+> const char* getStateName_2(enum State state);
+> 
+> const char* getStateName_2(enum State state) {
+>    switch (state) {
+> 	  case NEWLY_CREATED: return "NEWLY_CREATED";
+> 	  case READY: return "READY";
+> 	  case RUNNING: return "RUNNING";
+> 	  case BLOCKED: return "BLOCKED";
+> 	  case TERMINATED: return "TERMINATED";
+>    }
+> }
+> 
+125c144,168
+< 
+---
+>   
+>   //Added by Ya Chutiraka for Project2
+>   if(rpc->p_endpoint == interested &&rpc->p_isTracked == 1){
+>     current = current + 1;
+>     if(current >= BUFFER_SIZE){
+>        /*
+> 		message m;
+> 		m.m1_p1 = (char *) &(buffer_plog[0]);
+> 		m.m1_i2 = (endpoint_lookup(KERNEL))->p_endpoint;
+> 		m.m_type = KERNEL_TO_VFS;
+> 		mini_send(endpoint_lookup(KERNEL), VFS_PROC_NR, &m, FROM_KERNEL);
+> 	    */
+> 	    current = 0;
+> 	}
+>     
+>     buffer_plog[current].thisPID = rpc->p_pid;
+> 	buffer_plog[current].fromState = NEWLY_CREATED;
+> 	buffer_plog[current].toState = NEWLY_CREATED;
+> 	buffer_plog[current].timestamp = get_uptime();
+> 	rpc->p_prev_state = 0;
+> 	/*
+> 	printf("\nFORK pid = %d", rpc->p_pid);
+> 	printf("\ncurrent = %d, from = %s, toState = %s, timestamp = %ld", current, getStateName_2(buffer_plog[current].fromState), getStateName_2(buffer_plog[current].toState), (long)buffer_plog[current].timestamp);
+> 	*/
+>   }  

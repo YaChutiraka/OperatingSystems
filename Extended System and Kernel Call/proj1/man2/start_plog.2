@@ -1,0 +1,25 @@
+.\" Ya Chutiraka Project1 
+.\"
+.TH START_PLOG 2 "Sept 28, 2016"
+.UC 4
+.SH NAME
+start_plog \- start logging process creation and termination time
+.SH SYNOPSIS
+.ft B
+.nf
+#include <lib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.d>
+#include <sys/wait.h>
+
+void start_plog(void)
+.fi
+.ft R
+.SH DESCRIPTION
+.B Start_plog
+returns nothing
+Start logging process creation and termination time by calling a do_start_plog system call
+.PP
+.SH "SEE ALSO
+.BR fork (2), exit (2), stop_plog (2).

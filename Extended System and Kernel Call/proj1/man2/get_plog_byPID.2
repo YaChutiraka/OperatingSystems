@@ -1,0 +1,25 @@
+.\" Ya Chutiraka Project1 
+.\"
+.TH GET_PLOG_BYPID 2 "Sept 28, 2016"
+.UC 4
+.SH NAME
+get_plog_byPID \- get creation and termination time from logging process buffer
+.SH SYNOPSIS
+.ft B
+.nf
+#include <lib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.d>
+#include <sys/wait.h>
+
+int get_plog_byPID(int pid, long* c_time, long* t_time)
+.fi
+.ft R
+.SH DESCRIPTION
+.B Get_plog_byPID
+returns an int; 0 if that PID exists in the buffer, 2 if not
+get the errorCode 0 (success) or 2 (failiure) and retreiving creation time and termination time by calling a do_get_plog_byPID() system call
+.PP
+.SH "SEE ALSO
+.BR get_plog_byindex (2).

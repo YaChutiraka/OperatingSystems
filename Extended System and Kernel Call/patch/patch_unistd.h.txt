@@ -1,0 +1,5 @@
+447c447,448
+< 
+---
+> int plog_state_start(int);
+> int plog_state_stop(int);

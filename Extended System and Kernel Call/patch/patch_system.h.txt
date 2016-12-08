@@ -1,0 +1,6 @@
+34a35,39
+> int do_plog(struct proc * caller, message *m_ptr);
+> #if ! USE_PLOG
+> #define do_plog NULL
+> #endif
+> 

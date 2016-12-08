@@ -1,0 +1,22 @@
+14,16c14,16
+<   m.PR_ENDPT = parent;
+<   m.PR_SLOT = child;
+<   m.PR_FORK_FLAGS = flags;
+---
+>   m.PR_ENDPT2 = parent;
+>   m.PR_SLOT2 = child;
+>   m.PR_FORK_FLAGS2 = flags;
+18,19c18,27
+<   *child_endpoint = m.PR_ENDPT;
+<   *msgaddr = (vir_bytes) m.PR_FORK_MSGADDR;
+---
+>   *child_endpoint = m.PR_ENDPT2;
+>   *msgaddr = (vir_bytes) m.PR_FORK_MSGADDR2;
+>   /*
+>   printf("--------------------libsys/sys_fork.c------------------------\n");
+>   printf("PR_ENDPT2             %d\n", m.PR_ENDPT2);
+>   printf("PR_ENDPT2             %d\n", m.PR_ENDPT2);
+>   printf("PR_ENDPT2     		%d\n", PR_ENDPT2);
+>   printf("PR_PID2               %d\n", m.PR_PID2);
+>   printf("-----------------------------------------------------------\n");
+>   */

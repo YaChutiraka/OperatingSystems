@@ -1,0 +1,19 @@
+89a90
+>   // This is the file where my PID becomes so large. Probably because it is virtual
+91c92,101
+<   if((r=sys_fork(vmp->vm_endpoint, childproc,
+---
+>   // Added by Ya
+>   /*
+>   printf("++++++++++++++++++++vm/fork.c++++++++++++++++++++++++\n");
+>   printf("ENDPOINT           %d\n", msg->VMF_ENDPOINT);
+>   printf("slotno             %d\n", msg->VMF_SLOTNO);
+>   printf("CHILD_ENDPOINT     %d\n", msg->VMF_CHILD_ENDPOINT);
+>   printf("PID                %d\n", msg->VMF_PID);
+>   printf("+++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+>   */
+>  if((r=sys_fork(vmp->vm_endpoint, childproc,
+114c124
+< 
+---
+>   

@@ -1,0 +1,31 @@
+.\" Ya Chutiraka Project2 
+.\"
+.TH PLOG_STATE_STOP 2 "Nov 22, 2016"
+.UC 4
+.SH NAME
+plog_state_stop \- stop tracking process' states and time even though its state changes (given a PID by user)
+.SH SYNOPSIS
+.ft B
+.nf
+#include <lib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.d>
+#include <minix/endpoint.h>
+#include <minix/com.h>
+#include <minix/callnr.h>
+#include <minix/syslib.h>
+
+int plog_state_stop(int PID)
+.fi
+.ft R
+.SH DESCRIPTION
+.B Plog_State_Stop
+returns 0 if the process' PID is a user PID
+returns 1 if PID not found
+returns 2 if PID is invalid (non user PID)
+returns 3 if file error
+Stop logging state changes (NEWLY_CREATED, READY, RUNNING, BLOCKED, TERMINATED) of the interested PID, by calling do_plog system, which will prevent state tracking in kernel from being invoked. It is also supposed to stop writing those state changes (pid, from state, to state, time stamp) to a file in VFS if the function is implemented correctly
+.PP
+.SH "SEE ALSO
+.BR fork (2), exit (2), plog_state_start (2).

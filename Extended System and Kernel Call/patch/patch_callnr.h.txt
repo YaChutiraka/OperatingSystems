@@ -1,0 +1,2 @@
+110a111
+> #define PLOG		103	/* for proj2 start and stop plog*/

@@ -1,0 +1,7 @@
+5a6,9
+> //VMF_ENDPOINT			m10_i1
+> //VMF_SLOTNO			m10_i2
+> //VMF_CHILD_ENDPOINT	m10_i3	
+> 
+9a14
+> //int vm_fork(endpoint_t ep, int slot, endpoint_t *childep)

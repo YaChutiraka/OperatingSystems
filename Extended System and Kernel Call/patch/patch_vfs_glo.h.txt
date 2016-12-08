@@ -1,0 +1,21 @@
+8a9,10
+> // Added by Ya Chutiraka for Project2 11/21/2016
+> #define BUFFER_SIZE 5
+10a13,29
+> 
+> // Added by Ya Chutiraka for Project2 11/21/2016
+> struct buffer_vfs{
+> 	int thisPID;
+> 	enum State{
+> 	  NEWLY_CREATED,
+> 	  READY,
+>       RUNNING,
+>       BLOCKED,
+>       TERMINATED
+> 	} toState, fromState;
+>     time_t timestamp;
+> };
+> 
+> extern struct buffer_vfs buffer_vfs[BUFFER_SIZE];
+> extern int current;
+> extern endpoint_t interested;  /* see if this is the proc we want to track states */

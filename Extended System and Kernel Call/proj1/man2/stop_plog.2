@@ -1,0 +1,25 @@
+.\" Ya Chutiraka Project1 
+.\"
+.TH STOP_PLOG 2 "Sept 28, 2016"
+.UC 4
+.SH NAME
+stop_plog \- stop logging process creation and termination time
+.SH SYNOPSIS
+.ft B
+.nf
+#include <lib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.d>
+#include <sys/wait.h>
+
+void stop_plog(void)
+.fi
+.ft R
+.SH DESCRIPTION
+.B Stop_plog
+returns nothing
+Stop logging process creation and termination time by calling a do_stop_plog system call
+.PP
+.SH "SEE ALSO
+.BR fork (2), exit (2), start_plog (2).

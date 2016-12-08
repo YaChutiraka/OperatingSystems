@@ -1,0 +1,4 @@
+9c9
+< 	do_get_plog_byindex.c Buffer.h
+---
+> 	do_get_plog_byindex.c Buffer.h do_plog.c mproc.h pm.h plog_buffer_entry.h

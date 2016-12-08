@@ -1,0 +1,21 @@
+12a13,14
+> // Added by Ya Chutiraka for Project2 11/21/2016
+> #define BUFFER_SIZE 5
+19a22,38
+> 
+> // Added by Ya Chutiraka for Project2 11/21/2016
+> struct buffer_plog{
+> 	int thisPID;
+> 	enum State{
+> 	  NEWLY_CREATED,
+> 	  READY,
+>       RUNNING,
+>       BLOCKED,
+>       TERMINATED
+> 	} toState, fromState;
+>     time_t timestamp;
+> };
+> 
+> extern struct buffer_plog buffer_plog[BUFFER_SIZE];
+> extern int current;
+> extern endpoint_t interested;  /* see if this is the proc we want to track states */

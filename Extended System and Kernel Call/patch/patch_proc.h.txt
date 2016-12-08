@@ -1,0 +1,6 @@
+22a23,27
+>   // Added by Ya Chutiraka for project2 11/22/2016
+>   pid_t p_pid;
+>   int p_isTracked; /*if this is the intersted proc to track, then it is 1*/
+>   int p_prev_state; /* 0 if NEWLY CREATED, 1 if READY 2 if RUNNING, 3 if BLOCKED, 4 if TERMINATED*/
+>   

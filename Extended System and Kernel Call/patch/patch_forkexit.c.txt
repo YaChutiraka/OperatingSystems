@@ -1,0 +1,85 @@
+48a49,52
+> // Added by Ya Chutiraka for project2 11/10/2016
+> //struct plog_buffer_entry plog_buffer[1204];
+> //int current;
+> 
+84c88
+< 
+---
+>    
+88a93
+>   	
+142a148,159
+>  // Added by Ya Chutiraka for project2 on 11/10/2016
+>  /* do logging */
+>  /*
+>   if (plog_active()) {
+> 	time_t timestamp = plog_get_time();
+> 	plog_add_entry(new_pid, NEWLY_CREATED, READY, timestamp);
+>   }
+>   */
+>   
+>   
+>   
+>  /*int slot = find_proc(rmc->mp_pid)->slot;
+143a161,183
+>  printf("/ngetpid = %d", getpid());
+>  
+>  printf("next_child index = %d \n\n\n\n", next_child);
+> 	
+>  printf("mproc[next_child].mp_pid =  %d EQUAL rmc->mp_pid = %d", mproc[next_child].mp_pid, rmc->mp_pid);
+> 	
+>  printf("parent index = %d = mproc[next_child].mp_parent NOT EQUAL rmp->mp_pid = %d - real pid of parent\n\n\n", mproc[next_child].mp_parent, rmp->mp_pid);
+> 	
+>  printf("parent pid = %d \n\n\n" , mproc[mproc[next_child].mp_parent].mp_pid);	
+>  printf("/n new_pid = %d", new_pid);
+>  
+>  if(find_proc(rmp->mp_pid)!=NULL && find_proc(rmp->mp_pid)->onORoff ==1){
+> 	if(current > 1023) current = 0;
+> 	printf("/n ------------------ rmp->mp_pid = %d", rmp->mp_pid);
+> 	plog_buffer[current].thisPID = rmp->mp_pid;
+> 	plog_buffer[current].fromState = NEWLY_CREATED;
+> 	plog_buffer[current].toState = READY;
+> 	plog_buffer[current].timestamp = (long)rmp->mp_reply.reply_t1;
+> 	current++;
+>  }else{
+> 	 printf("/n onORoff = %d", find_proc(new_pid)->onORoff);
+>  } */
+> 
+156a197,204
+>   /*
+>   printf("=====================forkexit=======================\n");
+>   printf("endpoint            %d\n", rmp->mp_endpoint);
+>   printf("next_child SLOT     %d\n", next_child);
+>   printf("&chil_ep            %p\n", (void*)&child_ep);
+>   printf("new_pid             %d\n", new_pid);
+>   printf("==================================================\n");
+>   */
+199c247,250
+< 
+---
+>   
+>   // moved from down there by Ya
+>   new_pid = get_free_pid();
+>   // Original.
+201c252
+< 	return s;
+---
+> 	return s; 
+229c280,281
+<   new_pid = get_free_pid();
+---
+>   // Original 
+>   //new_pid = get_free_pid();
+231c283
+< 
+---
+>   
+273a326
+> 	/*
+275d327
+< 		//printf("\n forkexit >> do_exit");
+279c331
+<   
+---
+>     */

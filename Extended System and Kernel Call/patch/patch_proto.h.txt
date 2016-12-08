@@ -1,0 +1,2 @@
+66a67
+> int do_plog(void);

@@ -1,0 +1,36 @@
+353a354,355
+> # define SYS_PLOG (KERNEL_CALL + 57)		/* sys_plog() */
+> # define KERNEL_TO_VFS (KERNEL_CALL + 58)		/* kernel_to_vfs */
+356c358
+< #define NR_SYS_CALLS	57	/* number of kernel calls */
+---
+> #define NR_SYS_CALLS	58	/* number of kernel calls */
+364c366
+<     SYS_PROFBUF, SYS_SYSCTL, SYS_STATECTL, SYS_SAFEMEMSET
+---
+>     SYS_PROFBUF, SYS_SYSCTL, SYS_STATECTL, SYS_SAFEMEMSET, SYS_PLOG
+528c530
+< /* Field names for SYS_FORK, _EXEC, _EXIT, GETMCONTEXT, SETMCONTEXT.*/
+---
+> /* Field names for _EXEC, _EXIT, GETMCONTEXT, SETMCONTEXT.*/
+538a541,549
+> // Added by Ya Chutiraka 11/18/2016 for project2
+> /*Field names for _FORK */
+> #define PR_ENDPT2        m7_i1	/* indicates a process */
+> #define PR_SLOT2         m7_i2	/* indicates a process slot */
+> #define PR_MEM_PTR2		 m7_p2	/* tells where program name is for dmp */
+> #define PR_FORK_FLAGS2	 m7_i3  /* optional flags for fork operation */
+> #define PR_FORK_MSGADDR2 m7_p1	/* reply message address of forked child */
+> 
+> 
+912a924,925
+> // Added by Ya Chutiraka Project 2
+> // changed m1 to m10
+914,916c927,929
+< #	define VMF_ENDPOINT		m1_i1
+< #	define VMF_SLOTNO		m1_i2
+< #	define VMF_CHILD_ENDPOINT	m1_i3	/* result */
+---
+> #	define VMF_ENDPOINT			m10_i1
+> #	define VMF_SLOTNO			m10_i2
+> #	define VMF_CHILD_ENDPOINT	m10_i3	/* result */
