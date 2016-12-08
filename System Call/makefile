@@ -1,6 +1,6 @@
 # Name: (Ya) Naweeya Chutiraka
-# UFID: 4663-3911
-# Gator ID: nc10nchu
+# UFID:
+# Gator ID:
 
 GCC=cc # this an example of a use of Macro
 DEBUG = -g
